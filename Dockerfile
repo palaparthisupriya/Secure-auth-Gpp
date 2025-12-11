@@ -36,7 +36,7 @@ RUN mkdir -p /data /cron && chmod 755 /data /cron
 # Make cron file executable at runtime (avoid build-time errors)
 # CMD will set up cron and start the app
 CMD ["sh", "-c", "\
-    chmod 644 cron/2fa-cron && \
-    crontab cron/2fa-cron && \
+    chmod 644 Cron/2fa-cron && \
+    crontab Cron/2fa-cron && \
     service cron start && \
     python -m uvicorn app.main:app --host 0.0.0.0 --port 8080"]
