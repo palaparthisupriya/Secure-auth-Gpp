@@ -33,10 +33,11 @@ COPY . .
 # Make required directories
 RUN mkdir -p /data /cron && chmod 755 /data /cron
 
-# Make cron file executable at runtime (avoid build-time errors)
-# CMD will set up cron and start the app
+# Expose port for FastAPI
+EXPOSE 8080
+
+# Start cron + FastAPI
 CMD ["sh", "-c", "\
-    chmod 644 Cron/2fa-cron && \
-    crontab Cron/2fa-cron && \
+    if [ -f cronjob.txt ]; then crontab cronjob.txt; fi && \
     service cron start && \
-    python -m uvicorn app.main:app --host 0.0.0.0 --port 8080"]
+    uvicorn app:app --host 0.0.0.0 --port 8080"]
